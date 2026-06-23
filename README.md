@@ -1,64 +1,110 @@
-# AttendanceChecker
+AttendanceChecker
+概要
 
-## 概要
-勤怠CSVファイルを読み込み、
-出勤・遅刻・エラーチェックを行い、
-結果CSV・エラーCSVを出力するJavaアプリケーションです。
+AttendanceCheckerは、勤怠CSVファイルを読み込み、勤怠データのチェックを行うJava製デスクトップアプリケーションです。
 
-## 使用技術
-- Java
-- Eclipse
-- Git / GitHub
-- CSVファイル処理
-- Logger
-- Properties設定ファイル
+出勤時刻の遅刻判定や入力不備の検出を行い、結果を画面表示およびCSVファイルとして出力できます。
 
-## 主な機能
-- 勤怠CSV読込
-- 出勤判定
-- 遅刻判定
-- エラーチェック
-- 結果CSV出力
-- エラーCSV出力
-- ログ出力
+未経験から開発エンジニアを目指す中で、Javaの基礎文法だけでなく、オブジェクト指向設計、ファイル入出力、GUI開発を学ぶことを目的として作成しました。
 
-## 実行方法
+システム構成
+パッケージ構成
+App
+├─ GuiMain.java
+├─ Main.java
 
-```bash
-java -jar attendance.jar attendance.csv error.csv
-```
+model
+├─ Attendance.java
+└─ CheckResult.java
 
-## 入力CSV例
+service
+├─ AttendanceCheckService.java
+└─ SummaryService.java
 
-```csv
-社員ID,日付,出勤時刻,備考
-1001,2025-01-01,08:55,
-1002,2025-01-01,09:10,
-```
+util
+├─ CsvUtil.java
+├─ ConfigUtil.java
+├─ EncodingUtil.java
+├─ LoggerUtil.java
+└─ PropertyUtil.java
 
-## 出力ファイル
-- result_attendance.csv
-- error_attendance.csv
-- application.log
+view
+├─ MainFrame.java
+└─ ResultTableCellRenderer.java
+主な機能
+勤怠CSV読込
+UTF-8対応
+Shift-JIS対応
+ヘッダー行スキップ
+空行スキップ
+列数チェック
+勤怠チェック
+社員ID未入力チェック
+退勤時刻未入力チェック
+出勤時刻フォーマットチェック
+遅刻判定
+結果表示
+Swing GUI
+JTableによる一覧表示
+CSV出力
+結果CSV出力
+エラーCSV出力
+集計CSV出力
+集計機能
 
-## ディレクトリ構成
+社員ごとに以下を集計します。
 
-```text
-src/
- ┣ App/
- ┣ model/
- ┣ service/
- ┗ util/
-```
+出勤日数
+遅刻回数
+エラー回数
+ログ出力
 
-## 工夫した点
-- クラス分割による保守性向上
-- Loggerによるログ管理
-- CSV入出力の共通化
-- エラー時終了コード対応
+java.util.loggingを利用してログを出力しています。
 
-## 今後の改善点
-- JUnitテスト追加
-- GUI化
-- リファクタリング
-- 集計機能改善
+使用技術
+Java
+Swing
+JTable
+CSVファイル操作
+Java Logging API
+Git / GitHub
+工夫した点
+責務を分離した設計
+
+以下のように役割ごとにクラスを分割しました。
+
+model：データ保持
+service：業務ロジック
+util：共通処理
+view：画面表示
+
+保守性や拡張性を意識して設計しています。
+
+設定ファイル化
+
+遅刻判定時刻をconfig.propertiesで管理し、ソースコードを変更せず設定変更できるようにしました。
+
+文字コード対応
+
+実務ではUTF-8だけでなくShift-JISのCSVも扱うことがあるため、両方の文字コードに対応しました。
+
+GUI化
+
+当初はコマンドラインアプリとして作成しましたが、利用しやすさ向上のためSwingを利用してGUI化しました。
+
+また、判定結果に応じて色分け表示を行い、視認性を向上させています。
+
+今後の改善予定
+JUnitによる単体テスト追加
+ファイル保存先選択機能
+月次勤怠集計機能
+データベース連携
+Spring Boot版への移行
+実行画面
+
+※ GUI画面のスクリーンショットを掲載予定
+
+作者
+
+Java開発エンジニアを目指して学習中。
+実務では運用保守業務に従事しながら、Javaを中心に開発スキルを習得しています。
